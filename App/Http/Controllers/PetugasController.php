@@ -12,7 +12,7 @@ class PetugasController extends Controller
     public function inputpetugas(Request $req){
         $validator = Validator::make($req->all(),
         [
-            'username'=>'required',
+            'email'=>'required',
             'password'=>'required',
             'nama_petugas'=>'required',
             'level'=>'required',
@@ -21,7 +21,7 @@ class PetugasController extends Controller
             return Response()->json($validator->errors());
         }
         $save=PetugasModel::create([
-            'username'=>$req->username,
+            'email'=>$req->email,
             'password'=>$req->password,
             'nama_petugas'=>$req->nama_petugas,
             'level'=>$req->level,
@@ -36,7 +36,7 @@ class PetugasController extends Controller
     public function updatepetugas(Request $req ,$id_petugas){
         $validator = Validator::make($req->all(),[
             
-            'username'=>'required',
+            'email'=>'required',
             'password'=>'required',
             'nama_petugas'=>'required',
             'level'=>'required',
@@ -45,7 +45,7 @@ class PetugasController extends Controller
             return Response()->json($validator->errors());
         }
         $updatepetugas=PetugasModel::where('id_petugas' ,$id_petugas)->update([
-            'username'=>$req->username,
+            'email'=>$req->email,
             'password'=>Hash::make($req->get('password')),
             'nama_petugas'=>$req->nama_petugas,
             'level'=>$req->level,

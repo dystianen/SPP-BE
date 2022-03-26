@@ -28,13 +28,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 Route::get('/dapatkankelas',[KelasController::class,'getkelas']);
 Route::get('/carisiswa/{nisn}',[SiswaController::class,'cari_siswa']);
-Route::get('/getsiswa',[SiswaController::class,'indexsiswa']);
 Route::get('/yokkelas/{id_kelas}',[KelasController::class,'cari_kelas']);
 Route::get('/getkelass',[KelasController::class,'indexkelas']);
 Route::post('/register', [UserController::class,'register']); //register untuk petugas dan admin
 Route::post('login', [UserController::class,'login']); //login untuk petugas dan admin
 Route::post('register_siswa', [LoginSiswa::class,'registersiswa']); //register siswa
 Route::post('login_siswa', [LoginSiswa::class,'login']); //login untuk siswa
+Route::get('/getpetugas',[PetugasController::class,'getpetugas']);
+
 //pembagian hak akses petugas
 Route::group(['middleware'=>['jwt.verify:petugas']],function(){
     Route::post('/pembayaranpetugas',[TransaksiController::class,'Transaksi']);
@@ -48,7 +49,6 @@ Route::group(['middleware'=>['jwt.verify:admin']],function(){
     Route::put('/updatesiswa/{nisn}',[SiswaController::class,'updatesiswa']);
     Route::delete('deletesiswa/{nisn}',[SiswaController::class,'deletesiswa']);
     Route::post('/inputpetugas',[PetugasController::class,'inputpetugas']);
-    Route::get('/getpetugas',[PetugasController::class,'getpetugas']);
     Route::put('/updatepetugas/{id_petugas}',[PetugasController::class,'updatepetugas']);
     Route::delete('/deletepetugas/{id_petugas}',[PetugasController::class,'hapuspetugas']);
     Route::post('/inputspp',[SppController::class,'inputspp']);
@@ -64,7 +64,8 @@ Route::group(['middleware'=>['jwt.verify:admin']],function(){
 
 });
 //pembagian hak akses siswa
-Route::group(['middleware'=>['jwt.verifysiswa']],function(){
+Route::group(['middleware'=>['jwt.verify:siswa']],function(){
+    Route::get('/getsiswa',[SiswaController::class,'indexsiswa']);
     Route::get('/lihatkelas',[KelasController::class,'getkelas']);
     Route::get('/kurang_bayar/{id}',[TransaksiController::class,'kurang_bayar']);
 
